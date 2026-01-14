@@ -1,6 +1,11 @@
 Noteworthy changes in version 2.0.2 (unreleased)   [C45/A0/R)]
 ------------------------------------------------
 
+ * New context flag "export-filter".  [T8033]
+
+ * Interface changes relative to the 2.0.1 release:
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ gpgme_set_ctx_flag                    EXTENDED: New flag 'export-filter'.
 
 Noteworthy changes in version 2.0.1 (2025-09-23)   [C45/A0/R1]
 ------------------------------------------------

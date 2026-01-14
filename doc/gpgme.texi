@@ -3270,6 +3270,12 @@ the expiration time to use for key signature expiration.  Valid values
 are documented in the GnuPG manual and the gpg man page under
 the option @option{--default-cert-expire}.
 
+@item "export-filter"
+@since{2.0.2}
+The string given in @var{value} is passed to the GnuPG engine to use as
+filter when exporting keys.  Valid values are documented in the GnuPG
+manual and the gpg man page under the option @option{--export-filter}.
+
 @item "key-origin"
 @since{1.16.1}
 The string given in @var{value} is passed to the GnuPG engine to set

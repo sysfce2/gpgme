@@ -83,9 +83,11 @@ struct engine_ops
 				 int use_armor, gpgme_ctx_t ctx /* FIXME */);
   gpgme_error_t (*export) (void *engine, const char *pattern,
 			   gpgme_export_mode_t mode, gpgme_data_t keydata,
+			   const char *export_filter,
 			   int use_armor);
   gpgme_error_t (*export_ext) (void *engine, const char *pattern[],
 			       gpgme_export_mode_t mode, gpgme_data_t keydata,
+			       const char *export_filter,
 			       int use_armor);
   gpgme_error_t (*genkey) (void *engine,
                            const char *userid, const char *algo,

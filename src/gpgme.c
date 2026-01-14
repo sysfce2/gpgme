@@ -263,6 +263,7 @@ gpgme_release (gpgme_ctx_t ctx)
   free (ctx->import_filter);
   free (ctx->import_options);
   free (ctx->known_notations);
+  free (ctx->export_filter);
   _gpgme_engine_info_release (ctx->engine_info);
   ctx->engine_info = NULL;
   DESTROY_LOCK (ctx->lock);
@@ -631,6 +632,13 @@ gpgme_set_ctx_flag (gpgme_ctx_t ctx, const char *name, const char *value)
       if (!ctx->known_notations)
         err = gpg_error_from_syserror ();
     }
+  else if (!strcmp (name, "export-filter"))
+    {
+      free (ctx->export_filter);
+      ctx->export_filter = strdup (value);
+      if (!ctx->export_filter)
+        err = gpg_error_from_syserror ();
+    }
   else
     err = gpg_error (GPG_ERR_UNKNOWN_NAME);
 
@@ -727,6 +735,10 @@ gpgme_get_ctx_flag (gpgme_ctx_t ctx, const char *name)
   else if (!strcmp (name, "known-notations"))
     {
       return ctx->known_notations? ctx->known_notations: "";
+    }
+  else if (!strcmp (name, "export-filter"))
+    {
+      return ctx->export_filter? ctx->export_filter : "";
     }
   else
     return NULL;

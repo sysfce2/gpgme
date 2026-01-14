@@ -196,6 +196,9 @@ struct gpgme_context
    * options.  */
   char *known_notations;
 
+  /* The optional export filter.  */
+  char *export_filter;
+
   /* The operation data hooked into the context.  */
   ctx_op_data_t op_data;
 

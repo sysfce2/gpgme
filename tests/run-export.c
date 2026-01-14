@@ -62,6 +62,7 @@ show_usage (int ex)
          "  --secret-subkey  export secret subkeys instead of public keys\n"
          "  --raw            use PKCS#1 as secret key format\n"
          "  --pkcs12         use PKCS#12 as secret key format\n"
+         "  --export-filter  use the specified export filter\n"
          , stderr);
   exit (ex);
 }
@@ -80,6 +81,7 @@ main (int argc, char **argv)
   gpgme_protocol_t protocol = GPGME_PROTOCOL_OpenPGP;
   gpgme_export_mode_t mode = 0;
   int print_status = 0;
+  char *export_filter = NULL;
 
   if (argc)
     { argc--; argv++; }
@@ -144,6 +146,14 @@ main (int argc, char **argv)
           mode |= GPGME_EXPORT_MODE_PKCS12;
           argc--; argv++;
         }
+      else if (!strcmp (*argv, "--export-filter"))
+        {
+          argc--; argv++;
+          if (!argc)
+            show_usage (1);
+          export_filter = strdup (*argv);
+          argc--; argv++;
+        }
       else if (!strncmp (*argv, "--", 2))
         show_usage (1);
 
@@ -161,6 +171,11 @@ main (int argc, char **argv)
     {
       gpgme_set_status_cb (ctx, status_cb, NULL);
       gpgme_set_ctx_flag (ctx, "full-status", "1");
+    }
+  if (export_filter)
+    {
+      err = gpgme_set_ctx_flag (ctx, "export-filter", export_filter);
+      fail_if_err (err);
     }
 
   err = gpgme_data_new (&out);

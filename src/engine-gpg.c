@@ -2783,7 +2783,8 @@ gpg_encrypt_sign (void *engine, gpgme_key_t recp[],
 
 static gpgme_error_t
 export_common (engine_gpg_t gpg, gpgme_export_mode_t mode,
-               gpgme_data_t keydata, int use_armor)
+               gpgme_data_t keydata, const char *export_filter,
+               int use_armor)
 {
   gpgme_error_t err = 0;
 
@@ -2797,6 +2798,12 @@ export_common (engine_gpg_t gpg, gpgme_export_mode_t mode,
   if ((mode & GPGME_EXPORT_MODE_MINIMAL))
     {
       err = add_arg (gpg, "--export-options=export-minimal");
+    }
+  if (!err && export_filter && have_gpg_version (gpg, "2.1.14"))
+    {
+      err = add_arg (gpg, "--export-filter");
+      if (!err)
+      err = add_arg (gpg, export_filter);
     }
 
   if (err)
@@ -2836,12 +2843,12 @@ export_common (engine_gpg_t gpg, gpgme_export_mode_t mode,
 
 static gpgme_error_t
 gpg_export (void *engine, const char *pattern, gpgme_export_mode_t mode,
-	    gpgme_data_t keydata, int use_armor)
+	    gpgme_data_t keydata, const char *export_filter, int use_armor)
 {
   engine_gpg_t gpg = engine;
   gpgme_error_t err;
 
-  err = export_common (gpg, mode, keydata, use_armor);
+  err = export_common (gpg, mode, keydata, export_filter, use_armor);
 
   if (!err && pattern && *pattern)
     err = add_arg (gpg, pattern);
@@ -2855,12 +2862,12 @@ gpg_export (void *engine, const char *pattern, gpgme_export_mode_t mode,
 
 static gpgme_error_t
 gpg_export_ext (void *engine, const char *pattern[], gpgme_export_mode_t mode,
-		gpgme_data_t keydata, int use_armor)
+		gpgme_data_t keydata, const char *export_filter, int use_armor)
 {
   engine_gpg_t gpg = engine;
   gpgme_error_t err;
 
-  err = export_common (gpg, mode, keydata, use_armor);
+  err = export_common (gpg, mode, keydata, export_filter, use_armor);
 
   if (pattern)
     {

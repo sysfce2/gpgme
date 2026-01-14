@@ -1672,11 +1672,13 @@ gpgsm_encrypt (void *engine, gpgme_key_t recp[], const char *recpstring,
 
 static gpgme_error_t
 gpgsm_export (void *engine, const char *pattern, gpgme_export_mode_t mode,
-	      gpgme_data_t keydata, int use_armor)
+	      gpgme_data_t keydata, const char *export_filter, int use_armor)
 {
   engine_gpgsm_t gpgsm = engine;
   gpgme_error_t err = 0;
   char *cmd;
+
+  (void)export_filter;
 
   if (!gpgsm)
     return gpg_error (GPG_ERR_INV_VALUE);
@@ -1727,7 +1729,7 @@ gpgsm_export (void *engine, const char *pattern, gpgme_export_mode_t mode,
 
 static gpgme_error_t
 gpgsm_export_ext (void *engine, const char *pattern[], gpgme_export_mode_t mode,
-		  gpgme_data_t keydata, int use_armor)
+		  gpgme_data_t keydata, const char *export_filter, int use_armor)
 {
   engine_gpgsm_t gpgsm = engine;
   gpgme_error_t err = 0;
@@ -1735,6 +1737,8 @@ gpgsm_export_ext (void *engine, const char *pattern[], gpgme_export_mode_t mode,
   /* Length is "EXPORT " + "--secret " + "--pkcs12 " + p + '\0'.  */
   int length = 7 + 9 + 9 + 1;
   char *linep;
+
+  (void)export_filter;
 
   if (!gpgsm)
     return gpg_error (GPG_ERR_INV_VALUE);
