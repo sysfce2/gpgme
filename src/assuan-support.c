@@ -38,6 +38,7 @@
 #include <sys/wait.h>
 #endif
 
+#include "util.h"
 #include "assuan.h"
 
 #include "gpgme.h"
